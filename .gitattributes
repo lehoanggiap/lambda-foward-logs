@@ -20,4 +20,4 @@
 /tsconfig.dev.json linguist-generated
 /tsconfig.json linguist-generated
 /yarn.lock linguist-generated
-autocrlf=true filter=lfs diff=lfs merge=lfs -text
+autolf=false filter=lfs diff=lfs merge=lfs -text
