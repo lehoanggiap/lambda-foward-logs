@@ -219,6 +219,10 @@
           "method"
         ]
       }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
     ]
   },
   "overrides": [
