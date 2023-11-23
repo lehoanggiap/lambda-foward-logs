@@ -20,6 +20,6 @@ project.eslint?.addRules({
   'linebreak-style': ['error', 'unix'],
 });
 
-project.gitattributes.addLfsPattern('autocrlf=false');
+project.gitattributes.addLfsPattern('autocrlf=true');
 
 project.synth();
