@@ -12,7 +12,7 @@ export class MyStack extends Stack {
 
     console.log('Dirname: ' +__dirname);
 
-    new NodejsFunction(
+    const produceLogHandler = new NodejsFunction(
       this,
       'produce-log',
       {
@@ -27,7 +27,7 @@ export class MyStack extends Stack {
 
 
     new SubscriptionFilter(this, 'lambdaLogSubscriptionFilter', {
-      logGroup: LogGroup.fromLogGroupName(this, 'produce-log-log-group', '/aws/lambda/produce-log-function'),
+      logGroup: produceLogHandler.logGroup,
       destination: new LambdaDestination(ingestLogsFunction),
       filterPattern: FilterPattern.allEvents(),
     });
