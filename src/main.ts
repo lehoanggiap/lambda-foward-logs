@@ -2,7 +2,7 @@ import { join } from 'path';
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { FilterPattern, LogGroup, SubscriptionFilter } from 'aws-cdk-lib/aws-logs';
+import { FilterPattern, SubscriptionFilter } from 'aws-cdk-lib/aws-logs';
 import { LambdaDestination } from 'aws-cdk-lib/aws-logs-destinations';
 import { Construct } from 'constructs';
 
