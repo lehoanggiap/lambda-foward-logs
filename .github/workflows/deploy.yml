@@ -28,4 +28,4 @@ jobs:
       - name: cdk bootstrap
         run: npx cdk bootstrap  
       - name: cdk deploy
-        run: npx cdk deploy
+        run: npx cdk deploy --require-approval never
