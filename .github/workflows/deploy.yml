@@ -1,0 +1,31 @@
+name: release
+on: workflow_dispatch
+env:
+  AWS_REGION: us-east-1
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    # permissions for AWS Action to interact with GitHub's OIDC endpoint
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Install yarn
+        run: pnpm install -g yarn
+      - name: cdk synth
+        run: pnpm cdk synth
+      - name: cdk deploy
+        run: pnpm cdk deploy
