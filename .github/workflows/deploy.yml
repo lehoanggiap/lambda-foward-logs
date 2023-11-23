@@ -21,11 +21,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: '.node-version'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - name: Install yarn
-        run: pnpm install -g yarn
+      - name: Install dependencies
+        run: yarn install --check-files
       - name: cdk synth
-        run: pnpm cdk synth
+        run: npx cdk synth
       - name: cdk deploy
-        run: pnpm cdk deploy
+        run: npx cdk deploy
