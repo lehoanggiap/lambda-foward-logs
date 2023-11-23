@@ -6,6 +6,8 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   projenrcTs: true,
   gitignore: [
     '/lib/lambda',
+    '/test-reports',
+    '/test/__snapshots__',
   ],
 
   // deps: [],                /* Runtime dependencies of this module. */
