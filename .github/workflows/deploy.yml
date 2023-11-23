@@ -25,5 +25,7 @@ jobs:
         run: yarn install --check-files
       - name: cdk synth
         run: npx cdk synth
+      - name: cdk bootstrap
+        run: npx cdk bootstrap  
       - name: cdk deploy
         run: npx cdk deploy
