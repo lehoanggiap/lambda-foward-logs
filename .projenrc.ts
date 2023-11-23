@@ -5,9 +5,9 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'lambda-forward-logs',
   projenrcTs: true,
   gitignore: [
-    '/lib/lambda',
-    '/test-reports',
-    '/test/__snapshots__',
+    '/lib/lambda/',
+    '/test-reports/',
+    '**/test/__snapshots__/',
   ],
 
   // deps: [],                /* Runtime dependencies of this module. */
