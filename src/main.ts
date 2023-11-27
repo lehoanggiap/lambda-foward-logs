@@ -34,15 +34,23 @@ export class MyStack extends Stack {
       },
     );
 
-    produceLogHandler.addPermission('allowCloudWatchInvocation', {
-      principal: new ServicePrincipal('logs.amazonaws.com'),
-      action: 'lambda:InvokeFunction',
-      sourceArn: 'arn:aws:logs:us-east-1:273460028245:log-group:/aws/lambda/*',
-    });
+    // produceLogHandler.addPermission('allowCloudWatchInvocation', {
+    //   principal: new ServicePrincipal('logs.amazonaws.com'),
+    //   action: 'lambda:InvokeFunction',
+    //   sourceArn: 'arn:aws:logs:us-east-1:273460028245:log-group:/aws/lambda/*',
+    // });
 
     const produceLogLogGroup = produceLogHandler.logGroup;
 
     const ingestLogsFunction = NodejsFunction.fromFunctionArn(this, 'ingest-logs', 'arn:aws:lambda:us-east-1:273460028245:function:manualFunction');
+
+    // Nếu 2 th ở khác stack thì sẽ bị lỗi permission -> template đc build ra bởi dev sẽ k thể gọi uat
+    // tên của cái file template sẽ là application cho mấy cái aws resource
+    ingestLogsFunction.addPermission('allowCloudWatchInvocation', {
+      principal: new ServicePrincipal('logs.amazonaws.com'),
+      action: 'lambda:InvokeFunction',
+      sourceArn: 'arn:aws:logs:us-east-1:273460028245:log-group:/aws/lambda/*',
+    });
 
     new SubscriptionFilter(this, `produce-log-function-${appConfig.env}-subscription-filter`, {
       logGroup: produceLogLogGroup,
