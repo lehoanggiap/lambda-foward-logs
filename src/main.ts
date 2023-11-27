@@ -5,6 +5,7 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { FilterPattern, SubscriptionFilter } from 'aws-cdk-lib/aws-logs';
 import { LambdaDestination } from 'aws-cdk-lib/aws-logs-destinations';
 import { Construct } from 'constructs';
+import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 interface AppConfig{
   env: string;
@@ -32,6 +33,12 @@ export class MyStack extends Stack {
         entry: join(__dirname, '/lambda/produceLog.ts'),
       },
     );
+
+    produceLogHandler.addPermission('allowCloudWatchInvocation', {
+      principal: new ServicePrincipal('logs.amazonaws.com'),
+      action: 'lambda:InvokeFunction',
+      sourceArn: 'arn:aws:logs:us-east-1:273460028245:log-group:/aws/lambda/*',
+    });
 
     const produceLogLogGroup = produceLogHandler.logGroup;
 
