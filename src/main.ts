@@ -37,7 +37,7 @@ export class MyStack extends Stack {
 
     const ingestLogsFunction = NodejsFunction.fromFunctionArn(this, 'ingest-logs', 'arn:aws:lambda:us-east-1:273460028245:function:manualFunction');
 
-    new SubscriptionFilter(this, 'produce-log-function-subscription-filter', {
+    new SubscriptionFilter(this, `produce-log-function-${appConfig.env}-subscription-filter`, {
       logGroup: produceLogLogGroup,
       destination: new LambdaDestination(ingestLogsFunction),
       filterPattern: FilterPattern.allEvents(),
