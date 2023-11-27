@@ -37,7 +37,7 @@ export class MyStack extends Stack {
 
     const ingestLogsFunction = NodejsFunction.fromFunctionArn(this, 'ingest-logs', 'arn:aws:lambda:us-east-1:273460028245:function:manualFunction');
 
-    new CfnPermission(scope, id, {
+    new CfnPermission(this, id, {
       action: 'lambda:InvokeFunction',
       principal: 'logs.amazonaws.com',
       functionName: 'arn:aws:lambda:us-east-1:273460028245:function:manualFunction',
