@@ -1,11 +1,10 @@
 import { join } from 'path';
 import { App, Stack, StackProps } from 'aws-cdk-lib';
-import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import { CfnPermission, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { FilterPattern, SubscriptionFilter } from 'aws-cdk-lib/aws-logs';
 import { LambdaDestination } from 'aws-cdk-lib/aws-logs-destinations';
 import { Construct } from 'constructs';
-import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 interface AppConfig{
   env: string;
@@ -46,12 +45,12 @@ export class MyStack extends Stack {
 
     // Nếu 2 th ở khác stack thì sẽ bị lỗi permission -> template đc build ra bởi dev sẽ k thể gọi uat
     // tên của cái file template sẽ là application cho mấy cái aws resource
-    ingestLogsFunction.addPermission('allowCloudWatchInvocation', {
-      principal: new ServicePrincipal('logs.amazonaws.com'),
+    new CfnPermission(scope, id, {
       action: 'lambda:InvokeFunction',
+      principal: 'logs.amazonaws.com',
+      functionName: 'arn:aws:lambda:us-east-1:273460028245:function:manualFunction',
       sourceArn: 'arn:aws:logs:us-east-1:273460028245:log-group:/aws/lambda/*',
     });
-
     new SubscriptionFilter(this, `produce-log-function-${appConfig.env}-subscription-filter`, {
       logGroup: produceLogLogGroup,
       destination: new LambdaDestination(ingestLogsFunction),
