@@ -6,17 +6,27 @@ import { FilterPattern, SubscriptionFilter } from 'aws-cdk-lib/aws-logs';
 import { LambdaDestination } from 'aws-cdk-lib/aws-logs-destinations';
 import { Construct } from 'constructs';
 
+interface AppConfig{
+  env: string;
+}
+
+interface MyStackProps extends StackProps{
+  ctx: AppConfig;
+}
+
 export class MyStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps = {}) {
+  constructor(scope: Construct, id: string, props: MyStackProps) {
     super(scope, id, props);
+
+    const appConfig = props.ctx;
 
     console.log('Dirname: ' +__dirname);
 
     const produceLogHandler = new NodejsFunction(
       this,
-      'produce-log',
+      `produce-log-${appConfig.env}`,
       {
-        functionName: 'produce-log-function',
+        functionName: `produce-log-function-${appConfig.env}`,
         handler: 'handler',
         runtime: Runtime.NODEJS_18_X,
         entry: join(__dirname, '/lambda/produceLog.ts'),
@@ -36,13 +46,17 @@ export class MyStack extends Stack {
 }
 
 // for development, use account/region from cdk cli
-const devEnv = {
-  account: '273460028245',
-};
+// const devEnv = {
+//   account: '273460028245',
+// };
 
 const app = new App();
 
-new MyStack(app, 'lambda-forward-logs-dev', { env: devEnv });
+new MyStack(app, 'lambda-forward-logs-dev', {
+  ctx: {
+    env: process.env.ENV || 'dev',
+  },
+});
 // new MyStack(app, 'lambda-forward-logs-prod', { env: prodEnv });
 
 app.synth();
