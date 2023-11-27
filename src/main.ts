@@ -52,9 +52,11 @@ export class MyStack extends Stack {
 
 const app = new App();
 
-new MyStack(app, 'lambda-forward-logs-dev', {
+const env = process.env.ENV || 'dev';
+
+new MyStack(app, `lambda-forward-logs-${env}`, {
   ctx: {
-    env: process.env.ENV || 'dev',
+    env,
   },
 });
 // new MyStack(app, 'lambda-forward-logs-prod', { env: prodEnv });
